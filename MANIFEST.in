@@ -1,2 +1,2 @@
-include data/priortables.json
-include data/rolltables.json
+include rolltables/data/priortables.json
+include rolltables/data/rolltables.json
