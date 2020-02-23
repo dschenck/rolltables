@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="rolltables",
-    version="0.1.1",
+    version="0.2.0",
     author="david.schenck@outlook.com",
     author_email="david.schenck@outlook.com",
     description="Commodity futures roll tables made easy",
