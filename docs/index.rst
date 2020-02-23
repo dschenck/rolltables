@@ -23,11 +23,11 @@ Using rolltables is also easy
    'CLK2020'
 
    #resolve the F6 contract
-   >>> BCOM.resolve("CL", "F6", 1, 2020, "roll-in")
+   >>> BCOM.resolve("CL", "F6", 2, 2020, "roll-in")
    'CLU2020'
 
    #resolve the C2 contract (2nd distinct contract after F0)
-   >>> BCOM.resolve("CL", "C2", 1, 2020, "roll-in")
+   >>> BCOM.resolve("CL", "C2", 2, 2020, "roll-in")
    'CLU2020'
 
 Creating your custom rolltable
