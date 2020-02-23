@@ -15,7 +15,7 @@ class Rolltable:
     ----------
     table : dict
         a mapping of commodity tickers to list of 12 contracts
-        e.g. "CL":["G0","G0","J0","J0","M0","M0","Q0","U0","V0","Z0","Z0","F1"]
+        e.g. :code:`{"CL":["G0","G0",...,"Z0","F1"]}`
     
     tabletype : str, optional (defaults to 'roll-out')
         must be one of 'roll-in' or 'roll-out'
