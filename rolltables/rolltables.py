@@ -33,8 +33,8 @@ class Rolltable:
             raise ValueError("table should be a mapping of commodity tickers to list of 12 contracts")
         if not all(len(t) == 12 for t in table.values()):
             raise ValueError("table should be a mapping of commodity tickers to list of 12 contracts")
-        if not all(all(re.match(f"[{rolltables.constants.MONTHS}]\d?", c) for c in t) for t in table.values()): 
-            raise ValueError(f"contracts should be of the form '[{rolltables.constants.MONTHS}]\d?'")
+        if not all(all(re.match(fr"[{rolltables.constants.MONTHS}]\d?", c) for c in t) for t in table.values()): 
+            raise ValueError(rf"contracts should be of the form '[{rolltables.constants.MONTHS}]\d?'")
         self.table = table
         if tabletype not in ["roll-in", "roll-out"]: 
             raise ValueError("tabletype should be one of 'roll-in', 'roll-out', {tabletype} given")
@@ -61,7 +61,7 @@ class Rolltable:
             on invalid arguments
         """
         future = str(future)
-        if not re.match(f"[A-Za-z ]+[{rolltables.constants.MONTHS}]\d{{4}}", future):
+        if not re.match(rf"[A-Za-z ]+[{rolltables.constants.MONTHS}]\d{{4}}", future):
             raise ValueError("invalid future name")
         commodity, month, year = future[:-5], future[-5], future[-4:]
         for contract in self.table.get(commodity, []): 
@@ -188,20 +188,20 @@ class Rolltable:
                         index = index + 1
             return current
 
-    @staticmethod
-    def convert(data):
+    @classmethod
+    def parse(cls, data):
         """
         converts a pd.Series or a pd.DataFrame into a rolltable
         """
         if isinstance(data, pd.Series):
             if not len(data) == 12: 
                 raise ValueError(f"expected 12 points from pd.Series, received {len(data)}")
-            return rolltables.Rolltable({data.name:data.values})
+            return cls({data.name:data.values})
 
         if isinstance(data, pd.DataFrame):
             if not len(data.columns) == 12: 
                 raise ValueError(f"expected 12 columns from pd.DataFrame, received {len(data.columns)}")
-            return rolltables.Rolltable({row.name:row.values for i, row in data.iterrows()})
+            return cls({row.name:row.values for i, row in data.iterrows()})
 
         raise ValueError(f"expected pd.Series or pd.DataFrame, received {type(data)}")
 

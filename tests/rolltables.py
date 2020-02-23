@@ -134,7 +134,7 @@ class TestRolltables(unittest.TestCase):
     def test_parse(self):
         source = pd.DataFrame({"CL":["G0","G0","J0","K0","M0","N0","Q0","U0","V0","X0","Z0","F1"],
                                "GC":["G0","G0","J0","K0","M0","N0","Q0","U0","V0","X0","Z0","F1"]}).T
-        table = rolltables.Rolltable.convert(source)
+        table = rolltables.Rolltable.parse(source)
 
         self.assertIsInstance(table, rolltables.Rolltable)
 
