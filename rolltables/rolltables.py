@@ -189,19 +189,19 @@ class Rolltable:
             return current
 
     @classmethod
-    def parse(cls, data):
+    def parse(cls, data, tabletype="roll-out"):
         """
         converts a pd.Series or a pd.DataFrame into a rolltable
         """
         if isinstance(data, pd.Series):
             if not len(data) == 12: 
                 raise ValueError(f"expected 12 points from pd.Series, received {len(data)}")
-            return cls({data.name:data.values})
+            return cls({data.name:data.values}, tabletype=tabletype)
 
         if isinstance(data, pd.DataFrame):
             if not len(data.columns) == 12: 
                 raise ValueError(f"expected 12 columns from pd.DataFrame, received {len(data.columns)}")
-            return cls({row.name:row.values for i, row in data.iterrows()})
+            return cls({row.name:row.values for i, row in data.iterrows()}, tabletype=tabletype)
 
         raise ValueError(f"expected pd.Series or pd.DataFrame, received {type(data)}")
 
