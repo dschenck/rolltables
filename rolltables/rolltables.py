@@ -4,6 +4,7 @@ import os
 import pandas as pd
 
 import rolltables.constants
+import rolltables.priortables as priortables
 
 class Rolltable: 
     """
@@ -204,6 +205,26 @@ class Rolltable:
             return cls({row.name:row.values for i, row in data.iterrows()}, tabletype=tabletype)
 
         raise ValueError(f"expected pd.Series or pd.DataFrame, received {type(data)}")
+
+    @property
+    def priortable(self):
+        """
+        Returns the priortable
+
+        Note
+        ----------------------
+        The priortable includes only those contracts in the rolltable. 
+        Users will most generally use a generic prior table rather than 
+        the priortable of a given rolltable. 
+        """
+        if not hasattr(self, "_priortable"):
+            mapping = {commodity:{} for commodity in self.table}
+            for commodity in self.table: 
+                for i, contract in enumerate(self.table[commodity]):
+                    if self.table[commodity][i][0] != self.table[commodity][i-1][0]:
+                        mapping[commodity][self.table[commodity][i][0]] = self.table[commodity][i-1][0]
+            self._priortable = priortables.Priortable(mapping)
+        return self._priortable
 
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "rolltables.json"), "r") as file: 
     source = json.load(file)
