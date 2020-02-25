@@ -131,10 +131,17 @@ class TestRolltables(unittest.TestCase):
             #unrecognized letter
             parsed = rolltables.parse("AFHHKKNNUUXXF1")
 
-    def test_parse(self):
+    def test_parser(self):
         source = pd.DataFrame({"CL":["G0","G0","J0","K0","M0","N0","Q0","U0","V0","X0","Z0","F1"],
                                "GC":["G0","G0","J0","K0","M0","N0","Q0","U0","V0","X0","Z0","F1"]}).T
         table = rolltables.Rolltable.parse(source)
 
         self.assertIsInstance(table, rolltables.Rolltable)
+
+    def test_priortable(self):
+        table = rolltables.BCOM
+
+        self.assertIsInstance(
+            table.priortable, 
+            rolltables.Priortable)
 

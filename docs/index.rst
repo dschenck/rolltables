@@ -64,7 +64,7 @@ the :code:`rolltable.resolve` method takes 5 arguments:
 
 Prior contract tables
 ----------------------------------
-A contract's prior contract is the future contract expiring immediately the given contract. These prior contract may or may not be in a rolltable; as such, the :code:`F0` contract is not necessarily the prior contract of the :code:`F1` contract. The :code:`Priortable` object allows to resolve this contract easily. 
+A contract's prior contract is the future contract expiring immediately before the given contract. These prior contracts may or may not be in a rolltable; as such, the :code:`F0` contract is not necessarily the prior contract of the :code:`F1` contract. The :code:`Priortable` object allows to resolve this contract easily. 
 ::
 
    >>> from rolltables.priortables import Priortable, BCOMRS
