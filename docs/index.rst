@@ -1,6 +1,6 @@
 Rolltables made easy
 ======================================
-Major commodity future indices, like the Bloomberg Commodity Index (BCOM) and the S&P GSCI periodically roll future contracts following a pre-determined contract schedule. Such a schedule is known as a rolltable. The **Rolltables** module provides an easy-to-use interface to resolve active future contracts and prior contracts. 
+Major commodity future indices, like the Bloomberg Commodity Index (BCOM) and the S&P GSCI periodically roll future contracts following a pre-determined contract schedule. Such a schedule is known as a rolltable. The **rolltables** module provides an easy-to-use interface to resolve active future contracts and prior contracts. 
 
 Quickstart
 -------------------------------------
@@ -24,27 +24,35 @@ Using rolltables is also easy
 
    #resolve the F6 contract
    >>> BCOM.resolve("CL", "F6", 2, 2020, "roll-in")
-   'CLU2020'
+   'CLX2020'
 
    #resolve the C2 contract (2nd distinct contract after F0)
    >>> BCOM.resolve("CL", "C2", 2, 2020, "roll-in")
    'CLU2020'
 
+   #check whether a contract is in the rolltable
+   >>> 'CLX2019' in BCOM, 'CLZ2019' in BCOM
+   True, False
+
+
 Creating your custom rolltable
 ---------------------------------
-Creating a rolltable simply involves passing a dictionary mapping a commodity name (e.g. :code:`NG`) to a list of nearby contracts. Each contract should be comprised of a month letter (:code:`F` for January...) and a year offset (:code:`0` for the same month, :code:`1` for next year, etc.)
+Creating a rolltable simply involves either parsing a :code:`pd.DataFrame` or passing a dictionary mapping a commodity name (e.g. :code:`NG`) to a list of nearby contracts. Each contract should be comprised of a month letter (:code:`F` for January...) and a year offset (:code:`0` for the same month, :code:`1` for next year, etc.)
 
 ::
 
    >>> from rolltables import Rolltable
    
+   #you can parse a pandas.DataFrame
+   #the dataframe should have 12 columns, with the index representing commodity names
+   >>> table = Rolltable.parse(data, "roll-in")
+
+   #alternatively construct a rolltable from scratch
    >>> table = Rolltable({"CL":["G0","H0","J0","K0","M0","N0","Q0","U0","V0","X0","Z0","F1"]}, "roll-in")
    >>> table.resolve("CL", "F0", 3, 2020)
    'CLJ2020'
 
-   #you can also generate a rolltable from a pandas.DataFrame
-   #the dataframe should have 12 columns, with the index representing commodity names
-   >>> table = Rolltable.parse(data, "roll-in")
+.. warning:: the rolltables module comes with the BCOM and GSCI rolltables preloaded, but you should not rely on the accuracy of these for your production code.
 
 Design choices
 ----------------------------------
@@ -72,9 +80,12 @@ A contract's prior contract is the future contract expiring immediately before t
    >>> BCOMRS.resolve("CLX2020")
    'CLV2020'
 
+.. warning:: the rolltables module comes with the BCOMRS prior contract table preloaded, but you should not rely on the accuracy of this table for your production code.
+
+
 Utils
 -----------------------------------
-Use the utility functions and classes makes your code cleaner
+Using the utility functions and classes can help you express the logic of rolling commodity futures.
 ::
 
    >>> from rolltables import F
