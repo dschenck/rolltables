@@ -42,15 +42,9 @@ Creating a rolltable simply involves passing a dictionary mapping a commodity na
    >>> table.resolve("CL", "F0", 3, 2020)
    'CLJ2020'
 
-Prior contract tables
-----------------------------------
-A contract's prior contract is the future contract expiring immediately the given contract. These prior contract may or may not be in a rolltable; as such, the :code:`F0` contract is not necessarily the prior contract of the :code:`F1` contract. The :code:`Priortable` object allows to resolve this contract easily. 
-::
-
-   >>> from rolltables.priortables import Priortable, BCOMRS
-   
-   >>> BCOMRS.resolve("CLX2020")
-   'CLV2020'
+   #you can also generate a rolltable from a pandas.DataFrame
+   #the dataframe should have 12 columns, with the index representing commodity names
+   >>> table = Rolltable.parse(data, "roll-in")
 
 Design choices
 ----------------------------------
@@ -67,6 +61,29 @@ the :code:`rolltable.resolve` method takes 5 arguments:
 
 .. note:: *What are Fx and Cx forwards?*
    F forwards are the contracts the index will hold in *x* months from today: the F1 is simply the contract that will be held in a month's time. 
+
+Prior contract tables
+----------------------------------
+A contract's prior contract is the future contract expiring immediately the given contract. These prior contract may or may not be in a rolltable; as such, the :code:`F0` contract is not necessarily the prior contract of the :code:`F1` contract. The :code:`Priortable` object allows to resolve this contract easily. 
+::
+
+   >>> from rolltables.priortables import Priortable, BCOMRS
+   
+   >>> BCOMRS.resolve("CLX2020")
+   'CLV2020'
+
+Utils
+-----------------------------------
+Use the utility functions and classes makes your code cleaner
+::
+
+   >>> from rolltables import F
+   
+   >>> F(1) + 1
+   'F2'
+
+   >>> C(4) - 1
+   'C3'
 
 API Documentation 
 -----------------------------------

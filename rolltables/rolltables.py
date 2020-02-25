@@ -74,7 +74,7 @@ class Rolltable:
         """
         resolves the F-name of the given future contract
         as long as the contract is within 9 Fs of the current F0
-        if the same contract is held over several rolltables.constants.MONTHS, this returns
+        if the same contract is held over several :code:`rolltables.constants.MONTHS`, this returns
         the nearest F-name from the current F0
 
         Parameters
@@ -120,9 +120,9 @@ class Rolltable:
         commodity : str
             a commodity ticker (must be in the roll table)
         forward : str
-            one of F0..F9 or C0..C9
+            one of :code:`F0..F9` or :code:`C0..C9`
             if forward is one of FX, then the method returns the F0 contract
-            that prevails X rolltables.constants.MONTHS from the given (month, year)
+            that prevails X months from the given (month, year)
             if forward is one of CX, then the method returns the X-th distinct 
             contract in the roll table offset from the F0 on the given (month, year)
         month : int
@@ -192,7 +192,7 @@ class Rolltable:
     @classmethod
     def parse(cls, data, tabletype="roll-out"):
         """
-        converts a pd.Series or a pd.DataFrame into a rolltable
+        converts a :code:`pd.Series` or a :code:`pd.DataFrame` into a rolltable
         """
         if isinstance(data, pd.Series):
             if not len(data) == 12: 

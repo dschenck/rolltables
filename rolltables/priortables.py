@@ -12,7 +12,7 @@ class Priortable:
     ----------
     table : dict
         a mapping of commodity tickers to mapping of contracts to prior contracts
-        e.g. "CL":{"F":"Z", ..., "Z":"X"}
+        e.g. :code:`"CL":{"F":"Z", ..., "Z":"X"}`
     """
     def __init__(self, table):
         if not isinstance(table, dict): 
@@ -30,7 +30,7 @@ class Priortable:
         ----------
         future : str
             the name of the future contract for which we resolve the prior contract
-            e.g. CLZ2019
+            e.g. :code:`CLZ2019`
 
         Returns
         ----------
