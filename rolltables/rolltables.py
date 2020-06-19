@@ -62,6 +62,8 @@ class Rolltable:
         ValueError
             on invalid arguments
         """
+        if future in self.table: 
+            return True
         future = str(future)
         if not re.match(rf"[A-Za-z ]+[{rolltables.constants.MONTHS}]\d{{4}}", future):
             raise ValueError("invalid future name")
