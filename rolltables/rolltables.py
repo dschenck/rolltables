@@ -4,6 +4,7 @@ import os
 import pandas as pd
 
 import rolltables.constants
+import rolltables.internals
 import rolltables.priortables as priortables
 
 class Rolltable: 
@@ -111,6 +112,7 @@ class Rolltable:
                 return f"F-{index}"
         raise ValueError(f"future {future} is out of range")
         
+    @rolltables.internals.polyarg
     def resolve(self, commodity, forward, month, year, which=None):
         """
         resolves a forward contract to its actual fullname

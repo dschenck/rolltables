@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import datetime
 
 import rolltables
 
@@ -30,6 +31,12 @@ class TestRolltables(unittest.TestCase):
         self.assertEqual(table.resolve("CL", "F0", 12, 2019), "CLF2020")
         self.assertEqual(table.resolve("CL", "F0", 12, 2019, "roll-in"), "CLF2020")
         self.assertEqual(table.resolve("CL", "F0", 12, 2019, "roll-out"), "CLF2020")
+
+        #allow the arguments to be determined automatically
+        self.assertEqual(table.resolve("CL", datetime.date(2019,12,1)), "CLF2020")
+        self.assertEqual(table.resolve(datetime.date(2019,12,1), "CL"), "CLF2020")
+        self.assertEqual(table.resolve("CL", datetime.date(2019,12,1), "roll-in"), "CLF2020")
+        self.assertEqual(table.resolve("CL", datetime.date(2019,12,1), "roll-out"), "CLF2020")
 
         #F contracts
         self.assertEqual(table.resolve("CL", "F1", 12, 2019), "CLH2020")
@@ -144,4 +151,12 @@ class TestRolltables(unittest.TestCase):
         self.assertIsInstance(
             table.priortable, 
             rolltables.Priortable)
+
+    def test_polyarg(self):
+        table = rolltables.Rolltable({"CL":["H0","H0","K0","K0","N0","N0","U0","U0","X0","X0","F1","F1"]}, "roll-in")
+
+        self.assertEqual(table.resolve("CL", datetime.date(2020,1,1)), "CLH2020")
+        self.assertEqual(table.resolve("CL", 2020, 1), "CLH2020")
+        self.assertEqual(table.resolve("F2", "CL", datetime.date(2020,1,1)), "CLK2020")
+        self.assertEqual(table.resolve("CL", datetime.date(2020,1,1), "roll-out"), "CLF2020")
 
