@@ -160,3 +160,15 @@ class TestRolltables(unittest.TestCase):
         self.assertEqual(table.resolve("F2", "CL", datetime.date(2020,1,1)), "CLK2020")
         self.assertEqual(table.resolve("CL", datetime.date(2020,1,1), "roll-out"), "CLF2020")
 
+    def test_shift(self):
+        table = rolltables.Rolltable({"CL":["H0","H0","K0","K0","N0","N0","U0","U0","X0","X0","F1","F1"]}, "roll-in")
+
+        self.assertEqual(table.shift(1).table["CL"][0], "H0")
+        self.assertEqual(table.shift(1).table["CL"][-1], "H1")
+        self.assertEqual(table.shift(1).resolve("CL", datetime.date(2020, 1, 1)), "CLH2020")
+        self.assertEqual(table.shift(1).resolve("CL", "F1", datetime.date(2020, 1, 1)), "CLK2020")
+        
+        self.assertEqual(table.shift(-2).table["CL"][0], "F0")
+        self.assertEqual(table.shift(-2).table["CL"][1], "F0")
+        self.assertEqual(table.shift(-2).table["CL"][-1], "X0")
+

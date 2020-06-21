@@ -230,6 +230,34 @@ class Rolltable:
             self._priortable = priortables.Priortable(mapping)
         return self._priortable
 
+    def shift(self, offset, tabletype=None): 
+        """
+        Returns a roll table shifted by an offset. A positive offset (e.g. +1) will 
+        shift the table forward, i.e. the F1 will become the new F0 (assuming tabletype is 
+        unchanged). A negative offset (e.g. -1 will shift the table backward). 
+
+        Example
+        ----------
+        >>> table = {"CL":["H0","H0","K0"..."X0"]}
+        >>> rolltable = Rolltable(table, tabletype="roll-in")
+        >>> rolltable.shift(1).table
+        {"CL":["HO","K0"..."H1"]}
+        """
+        table = {key:[] for key in self.table}
+        for key in self.table: 
+            for i in range(12):
+                if i + offset > 11:
+                    month, year = self.table[key][(i + offset) % 12]
+                    table[key].append(f"{month}{int(year)+1}")
+                elif i + offset < 0:
+                    month, year = self.table[key][(i + offset) % 12]
+                    table[key].append(f"{month}{int(year)-1}")
+                else: 
+                    table[key].append(self.table[key][i + offset])
+        if tabletype is None: 
+            tabletype = self.tabletype
+        return type(self)(table, tabletype=tabletype)
+
 with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "rolltables.json"), "r") as file: 
     source = json.load(file)
     
