@@ -30,7 +30,15 @@ class Rolltable:
     ValueError
         on invalid arguments
     """
-    def __init__(self, table, tabletype="roll-out"): 
+    def __init__(self, table, tabletype="roll-out"):
+        if isinstance(table, pd.Series):
+            if not len(table) == 12: 
+                raise ValueError(f"expected 12 points from pd.Series, received {len(table)}")
+            table = {table.name:list(table)}
+        if isinstance(table, pd.DataFrame):
+            if not len(table.columns) == 12: 
+                raise ValueError(f"expected 12 columns from pd.DataFrame, received {len(table.columns)}")
+            table = {row.name:list(row) for i, row in table.iterrows()}
         if not isinstance(table, dict):
             raise ValueError("table should be a mapping of commodity tickers to list of 12 contracts")
         if not all(len(t) == 12 for t in table.values()):
