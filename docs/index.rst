@@ -12,10 +12,11 @@ Installing rolltables is simple with pip:
 Using rolltables is also easy
 ::
 
+   >>> from datetime import date 
    >>> from rolltables import Rolltable, BCOM, GSCI
 
    #determine the current active contract
-   >>> BCOM.resolve("CL", "F0", 2, 2020, "roll-out")
+   >>> BCOM.resolve("CL", date(2020, 2, 1) "roll-out")
    'CLH2020'
 
    #determine the next active future
